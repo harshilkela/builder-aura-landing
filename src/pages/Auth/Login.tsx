@@ -94,7 +94,10 @@ export default function Login() {
                   </div>
                 </div>
 
-                <Button className="w-full bg-finport-green hover:bg-green-600 text-white">
+                <Button
+                  onClick={handleLogin}
+                  className="w-full bg-finport-green hover:bg-green-600 text-white"
+                >
                   Sign In →
                 </Button>
 
