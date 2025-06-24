@@ -28,6 +28,16 @@ export default {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        finport: {
+          green: "#22C55E",
+          teal: "#14B8A6",
+          "light-gray": "#F8FAFC",
+          "dark-gray": "#64748B",
+        },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
