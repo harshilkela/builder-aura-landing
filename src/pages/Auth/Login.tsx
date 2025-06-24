@@ -16,6 +16,12 @@ import { CreditCard, Eye, EyeOff, Mail } from "lucide-react";
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [activeTab, setActiveTab] = useState("signin");
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    // For demo purposes, just navigate to dashboard
+    navigate("/dashboard");
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
