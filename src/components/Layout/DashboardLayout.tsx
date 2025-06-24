@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { Bell, Search, User } from "lucide-react";
 import Sidebar from "./Sidebar";
 
