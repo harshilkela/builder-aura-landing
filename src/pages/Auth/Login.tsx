@@ -245,7 +245,7 @@ const Login = () => {
         </Card>
 
         {/* Footer */}
-        <div className="text-center text-sm text-gray-500 dark:text-gray-400">
+        <div className="text-center text-sm text-gray-500 dark:text-purple-300">
           <p>Built with 💜 for the community</p>
         </div>
       </div>
