@@ -71,7 +71,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-cyan-50 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-cyan-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-900 flex items-center justify-center p-4 relative overflow-hidden transition-colors duration-500">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-purple-400/30 to-pink-400/30 rounded-full blur-3xl animate-pulse"></div>
@@ -97,10 +97,10 @@ const Login = () => {
             <h1 className="text-4xl font-bold gradient-text-purple">
               SkillSwap
             </h1>
-            <p className="text-gray-600 text-lg">
+            <p className="text-gray-600 dark:text-gray-300 text-lg">
               Where passions meet and skills flourish ✨
             </p>
-            <div className="flex items-center justify-center gap-6 text-sm text-gray-500">
+            <div className="flex items-center justify-center gap-6 text-sm text-gray-500 dark:text-gray-400">
               <div className="flex items-center gap-1">
                 <Heart className="h-4 w-4 text-red-400" />
                 <span>Connect</span>
@@ -118,7 +118,7 @@ const Login = () => {
         </div>
 
         {/* Login Form with glassmorphism */}
-        <Card className="border-0 shadow-2xl shadow-purple-500/20 backdrop-blur-lg bg-white/80 rounded-3xl overflow-hidden">
+        <Card className="border-0 shadow-2xl shadow-purple-500/20 backdrop-blur-lg bg-white/80 dark:bg-gray-800/80 rounded-3xl overflow-hidden transition-colors duration-300">
           <CardHeader className="text-center pb-6 bg-gradient-to-r from-purple-50/50 to-pink-50/50">
             <CardTitle className="flex items-center justify-center gap-3 text-xl">
               <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl">
