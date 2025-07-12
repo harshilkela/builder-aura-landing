@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import {
   Users,
   Search,
@@ -81,7 +82,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-cyan-50">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-cyan-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-900 transition-colors duration-500">
       {/* Floating background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse"></div>
@@ -90,7 +91,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       </div>
 
       {/* Header */}
-      <header className="relative backdrop-blur-md bg-white/80 border-b border-white/20 shadow-lg shadow-purple-500/10">
+      <header className="relative backdrop-blur-md bg-white/80 dark:bg-gray-900/80 border-b border-white/20 dark:border-gray-700/50 shadow-lg shadow-purple-500/10 dark:shadow-purple-500/20 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -105,7 +106,9 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 <h1 className="text-xl font-bold gradient-text-purple">
                   SkillSwap
                 </h1>
-                <p className="text-xs text-gray-500 -mt-1">Connect & Learn</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 -mt-1">
+                  Connect & Learn
+                </p>
               </div>
             </div>
 
