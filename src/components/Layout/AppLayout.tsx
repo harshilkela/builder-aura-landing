@@ -186,7 +186,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                             Admin
                           </Badge>
                         )}
-                        <div className="flex items-center gap-1 text-xs text-gray-600">
+                        <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400">
                           <Heart className="h-3 w-3 text-red-400" />
                           <span className="font-medium">
                             {user.rating.toFixed(1)}
@@ -202,16 +202,16 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="end"
-                  className="w-56 backdrop-blur-md bg-white/90 border border-white/20 shadow-xl"
+                  className="w-56 backdrop-blur-md bg-white/90 dark:bg-gray-800/90 border border-white/20 dark:border-gray-700/50 shadow-xl"
                 >
                   <DropdownMenuItem
                     onClick={() => navigate("/profile")}
-                    className="hover:bg-purple-50/50 cursor-pointer"
+                    className="hover:bg-purple-50/50 dark:hover:bg-purple-900/20 cursor-pointer"
                   >
                     <User className="mr-2 h-4 w-4 text-purple-600" />
                     Profile
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="hover:bg-purple-50/50 cursor-pointer">
+                  <DropdownMenuItem className="hover:bg-purple-50/50 dark:hover:bg-purple-900/20 cursor-pointer">
                     <Settings className="mr-2 h-4 w-4 text-gray-600" />
                     Settings
                   </DropdownMenuItem>
