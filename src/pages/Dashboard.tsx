@@ -182,10 +182,10 @@ const Dashboard = () => {
                     <Info className="h-5 w-5 text-blue-600" />
                   </div>
                   <AlertDescription className="flex-1">
-                    <div className="font-semibold text-blue-900 dark:text-cyan-100">
+                    <div className="font-semibold text-blue-900 dark:text-white">
                       {message.title}
                     </div>
-                    <div className="text-blue-700 dark:text-cyan-200 mt-1">
+                    <div className="text-blue-700 dark:text-gray-100 mt-1">
                       {message.content}
                     </div>
                   </AlertDescription>
@@ -216,13 +216,13 @@ const Dashboard = () => {
                   <div className="absolute top-0 right-0 w-24 h-24 bg-white/20 rounded-full blur-2xl -translate-y-12 translate-x-12"></div>
                   <div className="relative flex items-center justify-between">
                     <div className="space-y-2">
-                      <p className="text-sm font-medium text-gray-600 dark:text-purple-200">
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-100">
                         {stat.title}
                       </p>
                       <p className="text-3xl font-bold bg-gradient-to-r text-gray-800 dark:text-white">
                         {stat.value}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-purple-300">
+                      <p className="text-xs text-gray-500 dark:text-gray-200">
                         {stat.description}
                       </p>
                     </div>
@@ -252,7 +252,7 @@ const Dashboard = () => {
                 </div>
                 <span className="gradient-text-purple">Recent Swaps</span>
               </CardTitle>
-              <CardDescription className="dark:text-purple-200">
+              <CardDescription className="dark:text-gray-100">
                 Your latest skill exchange adventures
               </CardDescription>
             </CardHeader>
@@ -352,7 +352,7 @@ const Dashboard = () => {
                   Your Skills
                 </span>
               </CardTitle>
-              <CardDescription className="dark:text-purple-200">
+              <CardDescription className="dark:text-gray-100">
                 Your superpowers and learning aspirations
               </CardDescription>
             </CardHeader>
