@@ -64,7 +64,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const success = await register({
+      const result = await register({
         name: formData.name,
         email: formData.email,
         password: formData.password,
@@ -73,10 +73,10 @@ const Register = () => {
         availability: formData.availability,
       });
 
-      if (success) {
+      if (result.success) {
         navigate("/dashboard");
       } else {
-        setError("Email already exists");
+        setError(result.error || "Registration failed");
       }
     } catch (err) {
       setError("An error occurred during registration");
