@@ -342,7 +342,7 @@ const Dashboard = () => {
           </Card>
 
           {/* Skills Overview with enhanced design */}
-          <Card className="border-0 shadow-xl shadow-purple-500/10 backdrop-blur-sm bg-white/80 rounded-3xl overflow-hidden">
+          <Card className="border-0 shadow-xl shadow-purple-500/10 backdrop-blur-sm bg-white/80 dark:bg-gray-800/95 rounded-3xl overflow-hidden transition-colors duration-300">
             <CardHeader className="bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-emerald-100/50">
               <CardTitle className="flex items-center gap-3">
                 <div className="p-2 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl">
