@@ -119,14 +119,14 @@ const Login = () => {
 
         {/* Login Form with glassmorphism */}
         <Card className="border-0 shadow-2xl shadow-purple-500/20 backdrop-blur-lg bg-white/80 dark:bg-gray-800/80 rounded-3xl overflow-hidden transition-colors duration-300">
-          <CardHeader className="text-center pb-6 bg-gradient-to-r from-purple-50/50 to-pink-50/50">
+          <CardHeader className="text-center pb-6 bg-gradient-to-r from-purple-50/50 to-pink-50/50 dark:from-purple-900/30 dark:to-pink-900/30">
             <CardTitle className="flex items-center justify-center gap-3 text-xl">
               <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl">
                 <UserCircle className="h-5 w-5 text-white" />
               </div>
               <span className="gradient-text-purple">Welcome Back!</span>
             </CardTitle>
-            <CardDescription className="text-gray-600">
+            <CardDescription className="text-gray-600 dark:text-gray-300">
               Ready to continue your learning journey?
             </CardDescription>
           </CardHeader>
@@ -143,7 +143,7 @@ const Login = () => {
               <div className="space-y-2">
                 <Label
                   htmlFor="email"
-                  className="flex items-center gap-2 text-gray-700 font-medium"
+                  className="flex items-center gap-2 text-gray-700 dark:text-gray-300 font-medium"
                 >
                   <Mail className="h-4 w-4 text-purple-500" />
                   Email
@@ -162,7 +162,7 @@ const Login = () => {
               <div className="space-y-2">
                 <Label
                   htmlFor="password"
-                  className="flex items-center gap-2 text-gray-700 font-medium"
+                  className="flex items-center gap-2 text-gray-700 dark:text-gray-300 font-medium"
                 >
                   <Lock className="h-4 w-4 text-purple-500" />
                   Password
