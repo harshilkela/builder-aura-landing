@@ -259,8 +259,8 @@ const Dashboard = () => {
             <CardContent className="p-6">
               {userSwapRequests.length === 0 ? (
                 <div className="text-center py-12 space-y-4">
-                  <div className="p-4 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full w-fit mx-auto">
-                    <Rainbow className="h-12 w-12 text-purple-500" />
+                  <div className="p-4 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-800 dark:to-pink-800 rounded-full w-fit mx-auto">
+                    <Rainbow className="h-12 w-12 text-purple-500 dark:text-purple-300" />
                   </div>
                   <div>
                     <p className="text-gray-600 dark:text-white font-medium">
