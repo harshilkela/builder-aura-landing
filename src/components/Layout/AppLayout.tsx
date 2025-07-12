@@ -218,7 +218,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                   <DropdownMenuSeparator className="bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
                   <DropdownMenuItem
                     onClick={handleLogout}
-                    className="text-red-600 hover:bg-red-50/50 cursor-pointer"
+                    className="text-red-600 hover:bg-red-50/50 dark:hover:bg-red-900/20 cursor-pointer"
                   >
                     <LogOut className="mr-2 h-4 w-4" />
                     Logout
@@ -231,7 +231,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       </header>
 
       {/* Mobile Navigation */}
-      <nav className="md:hidden backdrop-blur-md bg-white/80 border-b border-white/20">
+      <nav className="md:hidden backdrop-blur-md bg-white/80 dark:bg-gray-900/80 border-b border-white/20 dark:border-gray-700/50 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex overflow-x-auto py-3 space-x-2 scrollbar-hide">
             {navigationItems.map((item) => {
