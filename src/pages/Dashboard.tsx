@@ -204,7 +204,7 @@ const Dashboard = () => {
                 key={stat.title}
                 className={`
                   border-0 shadow-xl shadow-purple-500/10 backdrop-blur-sm 
-                  bg-gradient-to-br ${stat.bgGradient} 
+                                    bg-gradient-to-br ${stat.bgGradient} dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-700 
                   hover:shadow-2xl hover:shadow-purple-500/20 
                   transition-all duration-500 hover:scale-105 
                   rounded-3xl overflow-hidden group cursor-pointer
