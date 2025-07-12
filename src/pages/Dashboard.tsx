@@ -216,13 +216,13 @@ const Dashboard = () => {
                   <div className="absolute top-0 right-0 w-24 h-24 bg-white/20 rounded-full blur-2xl -translate-y-12 translate-x-12"></div>
                   <div className="relative flex items-center justify-between">
                     <div className="space-y-2">
-                      <p className="text-sm font-medium text-gray-600 dark:text-gray-100">
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-50">
                         {stat.title}
                       </p>
-                      <p className="text-3xl font-bold bg-gradient-to-r text-gray-800 dark:text-white">
+                      <p className="text-3xl font-bold bg-gradient-to-r text-gray-800 dark:text-gray-50">
                         {stat.value}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-200">
+                      <p className="text-xs text-gray-500 dark:text-gray-300">
                         {stat.description}
                       </p>
                     </div>
