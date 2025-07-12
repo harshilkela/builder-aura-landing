@@ -143,7 +143,7 @@ const Login = () => {
               <div className="space-y-2">
                 <Label
                   htmlFor="email"
-                  className="flex items-center gap-2 text-gray-700 dark:text-gray-300 font-medium"
+                  className="flex items-center gap-2 text-gray-700 dark:text-gray-100 font-medium"
                 >
                   <Mail className="h-4 w-4 text-purple-500" />
                   Email
@@ -162,7 +162,7 @@ const Login = () => {
               <div className="space-y-2">
                 <Label
                   htmlFor="password"
-                  className="flex items-center gap-2 text-gray-700 dark:text-gray-300 font-medium"
+                  className="flex items-center gap-2 text-gray-700 dark:text-gray-100 font-medium"
                 >
                   <Lock className="h-4 w-4 text-purple-500" />
                   Password
