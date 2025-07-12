@@ -32,6 +32,8 @@ import {
   Rainbow,
   Coffee,
   Globe,
+  User,
+  Calendar,
 } from "lucide-react";
 
 const Dashboard = () => {
