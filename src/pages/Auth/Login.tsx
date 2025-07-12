@@ -97,7 +97,7 @@ const Login = () => {
             <h1 className="text-4xl font-bold gradient-text-purple">
               SkillSwap
             </h1>
-            <p className="text-gray-600 dark:text-gray-300 text-lg">
+            <p className="text-gray-600 dark:text-purple-200 text-lg">
               Where passions meet and skills flourish ✨
             </p>
             <div className="flex items-center justify-center gap-6 text-sm text-gray-500 dark:text-gray-400">
@@ -126,7 +126,7 @@ const Login = () => {
               </div>
               <span className="gradient-text-purple">Welcome Back!</span>
             </CardTitle>
-            <CardDescription className="text-gray-600 dark:text-gray-300">
+            <CardDescription className="text-gray-600 dark:text-purple-200">
               Ready to continue your learning journey?
             </CardDescription>
           </CardHeader>
@@ -199,7 +199,7 @@ const Login = () => {
               </Button>
 
               <div className="text-center">
-                <span className="text-gray-600 dark:text-gray-300">
+                <span className="text-gray-600 dark:text-purple-200">
                   New to SkillSwap?{" "}
                 </span>
                 <Link
@@ -220,7 +220,7 @@ const Login = () => {
               <Globe className="h-5 w-5" />
               Try It Out
             </CardTitle>
-            <CardDescription className="text-gray-600 dark:text-gray-300">
+            <CardDescription className="text-gray-600 dark:text-purple-200">
               Explore with our demo accounts
             </CardDescription>
           </CardHeader>
