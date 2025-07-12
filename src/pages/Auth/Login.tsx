@@ -40,11 +40,11 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const success = await login(email, password);
-      if (success) {
+      const result = await login(email, password);
+      if (result.success) {
         navigate("/dashboard");
       } else {
-        setError("Invalid email or password");
+        setError(result.error || "Login failed");
       }
     } catch (err) {
       setError("An error occurred during login");
@@ -59,9 +59,11 @@ const Login = () => {
       role === "admin" ? "admin@skillswap.com" : "john@example.com";
 
     try {
-      const success = await login(demoEmail, "demo");
-      if (success) {
+      const result = await login(demoEmail, "demo");
+      if (result.success) {
         navigate("/dashboard");
+      } else {
+        setError(result.error || "Demo login failed");
       }
     } catch (err) {
       setError("Demo login failed");

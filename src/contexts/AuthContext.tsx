@@ -43,21 +43,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
       const { user: userData, token } = await api.login(email, password);
       setUser(userData);
       localStorage.setItem("skillswap-user", JSON.stringify(userData));
-      return true;
+      return { success: true };
     } catch (error) {
       console.error("Login failed:", error);
-      return false;
+      const errorMessage = error instanceof Error ? error.message : "An error occurred during login";
+      return { success: false, error: errorMessage };
     }
   };
 
   const register = async (
     userData: Partial<User> & { password: string },
-  ): Promise<boolean> => {
+  ): Promise<{ success: boolean; error?: string }> => {
     try {
       const { user: newUser, token } = await api.register({
         name: userData.name || "",
@@ -71,10 +72,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       
       setUser(newUser);
       localStorage.setItem("skillswap-user", JSON.stringify(newUser));
-      return true;
+      return { success: true };
     } catch (error) {
       console.error("Registration failed:", error);
-      return false;
+      const errorMessage = error instanceof Error ? error.message : "An error occurred during registration";
+      return { success: false, error: errorMessage };
     }
   };
 
