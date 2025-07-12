@@ -287,7 +287,7 @@ const Dashboard = () => {
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex-1">
-                          <p className="font-medium text-gray-800">
+                          <p className="font-medium text-gray-800 dark:text-gray-100">
                             {request.fromUserId === user.id ? "You" : "Someone"}{" "}
                             requested{" "}
                             <span className="text-purple-600 font-semibold">
