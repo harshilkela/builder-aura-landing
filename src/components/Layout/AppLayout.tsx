@@ -20,6 +20,9 @@ import {
   LogOut,
   Shield,
   Bell,
+  Sparkles,
+  Zap,
+  Heart,
 } from "lucide-react";
 
 interface AppLayoutProps {
@@ -32,10 +35,30 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const location = useLocation();
 
   const navigationItems = [
-    { icon: Users, label: "Dashboard", path: "/dashboard" },
-    { icon: Search, label: "Browse Skills", path: "/browse" },
-    { icon: MessageSquare, label: "Swap Requests", path: "/swap-requests" },
-    { icon: User, label: "Profile", path: "/profile" },
+    {
+      icon: Users,
+      label: "Dashboard",
+      path: "/dashboard",
+      gradient: "from-purple-500 to-pink-500",
+    },
+    {
+      icon: Search,
+      label: "Discover",
+      path: "/browse",
+      gradient: "from-cyan-500 to-blue-500",
+    },
+    {
+      icon: MessageSquare,
+      label: "Swaps",
+      path: "/swap-requests",
+      gradient: "from-emerald-500 to-teal-500",
+    },
+    {
+      icon: User,
+      label: "Profile",
+      path: "/profile",
+      gradient: "from-orange-500 to-red-500",
+    },
   ];
 
   if (user?.role === "admin") {
@@ -43,6 +66,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       icon: Shield,
       label: "Admin",
       path: "/admin",
+      gradient: "from-violet-600 to-purple-600",
     });
   }
 
@@ -57,21 +81,36 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-cyan-50">
+      {/* Floating background elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-cyan-400/20 to-blue-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-emerald-400/10 to-teal-400/10 rounded-full blur-3xl animate-pulse delay-2000"></div>
+      </div>
+
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="relative backdrop-blur-md bg-white/80 border-b border-white/20 shadow-lg shadow-purple-500/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <div className="flex items-center gap-3">
-              <div className="bg-indigo-600 p-2 rounded-lg">
-                <Users className="h-6 w-6 text-white" />
+            <div className="flex items-center gap-3 group">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl blur opacity-75 group-hover:opacity-100 transition-opacity"></div>
+                <div className="relative bg-gradient-to-r from-purple-600 to-pink-600 p-2.5 rounded-xl">
+                  <Sparkles className="h-6 w-6 text-white" />
+                </div>
               </div>
-              <h1 className="text-xl font-bold text-gray-900">SkillSwap</h1>
+              <div>
+                <h1 className="text-xl font-bold gradient-text-purple">
+                  SkillSwap
+                </h1>
+                <p className="text-xs text-gray-500 -mt-1">Connect & Learn</p>
+              </div>
             </div>
 
             {/* Navigation */}
-            <nav className="hidden md:flex space-x-1">
+            <nav className="hidden md:flex space-x-2">
               {navigationItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
@@ -81,10 +120,25 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                     variant={isActive ? "default" : "ghost"}
                     size="sm"
                     onClick={() => navigate(item.path)}
-                    className="flex items-center gap-2"
+                    className={`
+                      relative overflow-hidden group transition-all duration-300
+                      ${
+                        isActive
+                          ? `bg-gradient-to-r ${item.gradient} text-white shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40`
+                          : "hover:bg-white/60 backdrop-blur-sm border border-white/30 hover:shadow-md"
+                      }
+                    `}
                   >
-                    <Icon className="h-4 w-4" />
+                    {!isActive && (
+                      <div
+                        className={`absolute inset-0 bg-gradient-to-r ${item.gradient} opacity-0 group-hover:opacity-10 transition-opacity`}
+                      ></div>
+                    )}
+                    <Icon className="h-4 w-4 mr-2" />
                     {item.label}
+                    {isActive && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                    )}
                   </Button>
                 );
               })}
@@ -92,19 +146,24 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
             {/* User Menu */}
             <div className="flex items-center gap-4">
-              <Button variant="ghost" size="sm">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="relative hover:bg-white/60 backdrop-blur-sm border border-white/30 hover:shadow-md group"
+              >
                 <Bell className="h-4 w-4" />
+                <div className="absolute top-1 right-1 w-2 h-2 bg-gradient-to-r from-pink-500 to-red-500 rounded-full animate-pulse"></div>
               </Button>
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="flex items-center gap-2 h-auto p-2"
+                    className="flex items-center gap-3 h-auto p-2 hover:bg-white/60 backdrop-blur-sm border border-white/30 hover:shadow-md rounded-2xl group"
                   >
-                    <Avatar className="h-8 w-8">
+                    <Avatar className="h-10 w-10 ring-2 ring-white/50 group-hover:ring-purple-400/50 transition-all">
                       <AvatarImage src={user.profilePhoto} />
-                      <AvatarFallback>
+                      <AvatarFallback className="bg-gradient-to-br from-purple-400 to-pink-400 text-white font-semibold">
                         {user.name
                           .split(" ")
                           .map((n) => n[0])
@@ -113,34 +172,49 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                       </AvatarFallback>
                     </Avatar>
                     <div className="hidden sm:flex flex-col items-start">
-                      <span className="text-sm font-medium">{user.name}</span>
-                      <div className="flex items-center gap-1">
+                      <span className="text-sm font-medium text-gray-800">
+                        {user.name}
+                      </span>
+                      <div className="flex items-center gap-2">
                         {user.role === "admin" && (
-                          <Badge variant="secondary" className="text-xs">
+                          <Badge className="text-xs bg-gradient-to-r from-violet-500 to-purple-500 border-0">
+                            <Shield className="w-3 h-3 mr-1" />
                             Admin
                           </Badge>
                         )}
-                        \n{" "}
-                        <span className="text-xs text-gray-500">
-                          ⭐ {user.rating.toFixed(1)} ({user.reviewCount})
-                        </span>
+                        <div className="flex items-center gap-1 text-xs text-gray-600">
+                          <Heart className="h-3 w-3 text-red-400" />
+                          <span className="font-medium">
+                            {user.rating.toFixed(1)}
+                          </span>
+                          <span className="text-gray-400">
+                            ({user.reviewCount})
+                          </span>
+                        </div>
                       </div>
                     </div>
+                    <Zap className="h-4 w-4 text-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuItem onClick={() => navigate("/profile")}>
-                    <User className="mr-2 h-4 w-4" />
+                <DropdownMenuContent
+                  align="end"
+                  className="w-56 backdrop-blur-md bg-white/90 border border-white/20 shadow-xl"
+                >
+                  <DropdownMenuItem
+                    onClick={() => navigate("/profile")}
+                    className="hover:bg-purple-50/50 cursor-pointer"
+                  >
+                    <User className="mr-2 h-4 w-4 text-purple-600" />
                     Profile
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Settings className="mr-2 h-4 w-4" />
+                  <DropdownMenuItem className="hover:bg-purple-50/50 cursor-pointer">
+                    <Settings className="mr-2 h-4 w-4 text-gray-600" />
                     Settings
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator />
+                  <DropdownMenuSeparator className="bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
                   <DropdownMenuItem
                     onClick={handleLogout}
-                    className="text-red-600"
+                    className="text-red-600 hover:bg-red-50/50 cursor-pointer"
                   >
                     <LogOut className="mr-2 h-4 w-4" />
                     Logout
@@ -153,9 +227,9 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       </header>
 
       {/* Mobile Navigation */}
-      <nav className="md:hidden bg-white border-b">
+      <nav className="md:hidden backdrop-blur-md bg-white/80 border-b border-white/20">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex overflow-x-auto py-2 space-x-1">
+          <div className="flex overflow-x-auto py-3 space-x-2 scrollbar-hide">
             {navigationItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
@@ -165,9 +239,16 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                   variant={isActive ? "default" : "ghost"}
                   size="sm"
                   onClick={() => navigate(item.path)}
-                  className="flex items-center gap-2 whitespace-nowrap"
+                  className={`
+                    relative overflow-hidden whitespace-nowrap min-w-fit group
+                    ${
+                      isActive
+                        ? `bg-gradient-to-r ${item.gradient} text-white shadow-lg`
+                        : "hover:bg-white/60 backdrop-blur-sm border border-white/30"
+                    }
+                  `}
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-4 w-4 mr-2" />
                   {item.label}
                 </Button>
               );
@@ -177,9 +258,21 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {children}
       </main>
+
+      {/* Floating Action Elements */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <div className="flex flex-col gap-3">
+          <Button
+            onClick={() => navigate("/browse")}
+            className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40 rounded-full p-3 group"
+          >
+            <Search className="h-5 w-5 group-hover:scale-110 transition-transform" />
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };
