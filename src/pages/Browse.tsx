@@ -78,7 +78,7 @@ const Browse = () => {
     "Other",
   ];
 
-  const filteredUsers = mockUsers.filter((otherUser) => {
+  const filteredUsers = users.filter((otherUser) => {
     if (otherUser.id === user.id || !otherUser.isPublic) return false;
 
     const matchesSearch = searchTerm
