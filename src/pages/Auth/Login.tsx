@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,180 +7,170 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CreditCard, Eye, EyeOff, Mail } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useAuth } from "@/contexts/AuthContext";
+import { UserCircle, Mail, Lock, Users } from "lucide-react";
 
-export default function Login() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [activeTab, setActiveTab] = useState("signin");
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    // For demo purposes, just navigate to dashboard
-    navigate("/dashboard");
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const success = await login(email, password);
+      if (success) {
+        navigate("/dashboard");
+      } else {
+        setError("Invalid email or password");
+      }
+    } catch (err) {
+      setError("An error occurred during login");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const demoLogin = async (role: "user" | "admin") => {
+    setLoading(true);
+    const demoEmail =
+      role === "admin" ? "admin@skillswap.com" : "john@example.com";
+
+    try {
+      const success = await login(demoEmail, "demo");
+      if (success) {
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      setError("Demo login failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-8">
-        {/* Logo and Header */}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-md space-y-6">
+        {/* Header */}
         <div className="text-center">
           <div className="flex justify-center mb-4">
-            <div className="w-12 h-12 bg-finport-teal rounded-lg flex items-center justify-center">
-              <CreditCard className="w-6 h-6 text-white" />
+            <div className="bg-indigo-600 p-3 rounded-full">
+              <Users className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Welcome to FinPort
-          </h1>
-          <p className="text-gray-600 mt-2">Your personal finance companion</p>
+          <h1 className="text-3xl font-bold text-gray-900">SkillSwap</h1>
+          <p className="text-gray-600 mt-2">Connect, Learn, and Share Skills</p>
         </div>
 
-        {/* Auth Form */}
-        <Card className="border-0 shadow-lg">
-          <CardHeader className="space-y-4">
-            <CardTitle className="text-center text-xl">Get Started</CardTitle>
-            <CardDescription className="text-center">
-              Choose how you'd like to continue
+        {/* Login Form */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <UserCircle className="h-5 w-5" />
+              Sign In
+            </CardTitle>
+            <CardDescription>
+              Enter your credentials to access your account
             </CardDescription>
-
-            <Tabs
-              value={activeTab}
-              onValueChange={setActiveTab}
-              className="w-full"
-            >
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="signin">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Sign Up</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="signin" className="space-y-4 mt-6">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="john@example.com"
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
-                  <div className="relative">
-                    <Input
-                      id="password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
-                      className="pr-10"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    >
-                      {showPassword ? (
-                        <EyeOff className="w-4 h-4" />
-                      ) : (
-                        <Eye className="w-4 h-4" />
-                      )}
-                    </button>
-                  </div>
-                </div>
-
-                <Button
-                  onClick={handleLogin}
-                  className="w-full bg-finport-green hover:bg-green-600 text-white"
-                >
-                  Sign In →
-                </Button>
-
-                <div className="text-center">
-                  <Link
-                    to="/forgot-password"
-                    className="text-finport-teal hover:underline text-sm"
-                  >
-                    Forgot your password?
-                  </Link>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="signup" className="space-y-4 mt-6">
-                <div className="space-y-2">
-                  <Label htmlFor="fullname">Full Name</Label>
-                  <Input id="fullname" type="text" placeholder="John Doe" />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="signup-email">Email</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <Input
-                      id="signup-email"
-                      type="email"
-                      placeholder="john@example.com"
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="signup-password">Password</Label>
-                  <div className="relative">
-                    <Input
-                      id="signup-password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Create a strong password"
-                      className="pr-10"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    >
-                      {showPassword ? (
-                        <EyeOff className="w-4 h-4" />
-                      ) : (
-                        <Eye className="w-4 h-4" />
-                      )}
-                    </button>
-                  </div>
-                </div>
-
-                <Button
-                  onClick={handleLogin}
-                  className="w-full bg-finport-green hover:bg-green-600 text-white"
-                >
-                  Create Account →
-                </Button>
-
-                <p className="text-xs text-gray-500 text-center">
-                  By continuing, you agree to our{" "}
-                  <Link
-                    to="/terms"
-                    className="text-finport-teal hover:underline"
-                  >
-                    Terms of Service
-                  </Link>{" "}
-                  and{" "}
-                  <Link
-                    to="/privacy"
-                    className="text-finport-teal hover:underline"
-                  >
-                    Privacy Policy
-                  </Link>
-                </p>
-              </TabsContent>
-            </Tabs>
           </CardHeader>
+          <form onSubmit={handleSubmit}>
+            <CardContent className="space-y-4">
+              {error && (
+                <Alert variant="destructive">
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+
+              <div className="space-y-2">
+                <Label htmlFor="email" className="flex items-center gap-2">
+                  <Mail className="h-4 w-4" />
+                  Email
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="password" className="flex items-center gap-2">
+                  <Lock className="h-4 w-4" />
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+            </CardContent>
+
+            <CardFooter className="flex flex-col space-y-4">
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? "Signing in..." : "Sign In"}
+              </Button>
+
+              <div className="text-center text-sm">
+                Don't have an account?{" "}
+                <Link
+                  to="/register"
+                  className="text-indigo-600 hover:text-indigo-500 font-medium"
+                >
+                  Sign up
+                </Link>
+              </div>
+            </CardFooter>
+          </form>
+        </Card>
+
+        {/* Demo Logins */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm">Demo Accounts</CardTitle>
+            <CardDescription className="text-xs">
+              Try the platform with pre-configured accounts
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <Button
+              onClick={() => demoLogin("user")}
+              variant="outline"
+              className="w-full"
+              disabled={loading}
+            >
+              Demo User (john@example.com)
+            </Button>
+            <Button
+              onClick={() => demoLogin("admin")}
+              variant="outline"
+              className="w-full"
+              disabled={loading}
+            >
+              Demo Admin (admin@skillswap.com)
+            </Button>
+          </CardContent>
         </Card>
       </div>
     </div>
   );
-}
+};
+
+export default Login;
