@@ -106,7 +106,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 <h1 className="text-xl font-bold gradient-text-purple">
                   SkillSwap
                 </h1>
-                <p className="text-xs text-gray-500 dark:text-gray-400 -mt-1">
+                <p className="text-xs text-gray-500 dark:text-purple-200 -mt-1">
                   Connect & Learn
                 </p>
               </div>
