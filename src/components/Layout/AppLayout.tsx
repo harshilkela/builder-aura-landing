@@ -186,7 +186,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                             Admin
                           </Badge>
                         )}
-                        <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400">
+                        <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-purple-200">
                           <Heart className="h-3 w-3 text-red-400" />
                           <span className="font-medium">
                             {user.rating.toFixed(1)}
