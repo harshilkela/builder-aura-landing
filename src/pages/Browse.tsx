@@ -211,7 +211,7 @@ const Browse = () => {
                   </Avatar>
                   <div className="flex-1">
                     <CardTitle className="text-lg">{otherUser.name}</CardTitle>
-                    <div className="flex items-center gap-4 text-sm text-gray-600 mt-1">
+                    <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-200 mt-1">
                       {otherUser.location && (
                         <div className="flex items-center gap-1">
                           <MapPin className="h-3 w-3" />
