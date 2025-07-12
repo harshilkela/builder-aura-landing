@@ -290,13 +290,13 @@ const Dashboard = () => {
                           <p className="font-medium text-gray-800 dark:text-white">
                             {request.fromUserId === user.id ? "You" : "Someone"}{" "}
                             requested{" "}
-                            <span className="text-purple-600 font-semibold">
+                            <span className="text-purple-600 dark:text-purple-300 font-semibold">
                               {request.requestedSkill}
                             </span>
                           </p>
                           <p className="text-sm text-gray-600 dark:text-gray-100 mt-1">
                             Offering:{" "}
-                            <span className="text-emerald-600 font-medium">
+                            <span className="text-emerald-600 dark:text-emerald-300 font-medium">
                               {request.offeredSkill}
                             </span>
                           </p>
