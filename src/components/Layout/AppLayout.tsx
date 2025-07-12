@@ -149,10 +149,11 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
             {/* User Menu */}
             <div className="flex items-center gap-4">
+              <ThemeToggle />
               <Button
                 variant="ghost"
                 size="sm"
-                className="relative hover:bg-white/60 backdrop-blur-sm border border-white/30 hover:shadow-md group"
+                className="relative hover:bg-white/60 dark:hover:bg-white/10 backdrop-blur-sm border border-white/30 dark:border-white/20 hover:shadow-md group"
               >
                 <Bell className="h-4 w-4" />
                 <div className="absolute top-1 right-1 w-2 h-2 bg-gradient-to-r from-pink-500 to-red-500 rounded-full animate-pulse"></div>
@@ -162,7 +163,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="flex items-center gap-3 h-auto p-2 hover:bg-white/60 backdrop-blur-sm border border-white/30 hover:shadow-md rounded-2xl group"
+                    className="flex items-center gap-3 h-auto p-2 hover:bg-white/60 dark:hover:bg-white/10 backdrop-blur-sm border border-white/30 dark:border-white/20 hover:shadow-md rounded-2xl group"
                   >
                     <Avatar className="h-10 w-10 ring-2 ring-white/50 group-hover:ring-purple-400/50 transition-all">
                       <AvatarImage src={user.profilePhoto} />
@@ -175,7 +176,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                       </AvatarFallback>
                     </Avatar>
                     <div className="hidden sm:flex flex-col items-start">
-                      <span className="text-sm font-medium text-gray-800">
+                      <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
                         {user.name}
                       </span>
                       <div className="flex items-center gap-2">
