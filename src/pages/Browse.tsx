@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AppLayout from "@/components/Layout/AppLayout";
 import { useAuth } from "@/contexts/AuthContext";
-import { useSkillSwap } from "@/contexts/SkillSwapContext";
+import { useUsers, useCreateSwap } from "@/hooks/useApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -45,12 +45,19 @@ import { User as UserType } from "@/types";
 
 const Browse = () => {
   const { user } = useAuth();
-  const { users, createSwapRequest } = useSkillSwap();
   const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedLevel, setSelectedLevel] = useState("all");
+  
+  // API hooks for real data
+  const { data: usersResponse, isLoading, error } = useUsers({
+    skill: searchTerm,
+    page: 1,
+    limit: 50
+  });
+  const createSwap = useCreateSwap();
   const [swapRequestDialog, setSwapRequestDialog] = useState({
     open: false,
     targetUser: null as UserType | null,
@@ -78,14 +85,11 @@ const Browse = () => {
     "Other",
   ];
 
+  // Extract users from API response and add loading/error handling
+  const users = usersResponse?.users || [];
+  
   const filteredUsers = users.filter((otherUser) => {
     if (otherUser.id === user.id || !otherUser.isPublic) return false;
-
-    const matchesSearch = searchTerm
-      ? otherUser.skillsOffered.some((skill) =>
-          skill.name.toLowerCase().includes(searchTerm.toLowerCase()),
-        )
-      : true;
 
     const matchesCategory =
       selectedCategory === "all"
@@ -101,7 +105,7 @@ const Browse = () => {
             (skill) => skill.level === selectedLevel,
           );
 
-    return matchesSearch && matchesCategory && matchesLevel;
+    return matchesCategory && matchesLevel;
   });
 
   const openSwapRequestDialog = (targetUser: UserType, skillName: string) => {
@@ -114,24 +118,64 @@ const Browse = () => {
     setSelectedOfferedSkill("");
   };
 
-  const sendSwapRequest = () => {
+  const sendSwapRequest = async () => {
     if (!swapRequestDialog.targetUser || !selectedOfferedSkill) return;
 
-    createSwapRequest({
-      fromUserId: user.id,
-      toUserId: swapRequestDialog.targetUser.id,
-      requestedSkill: swapRequestDialog.targetSkill,
-      offeredSkill: selectedOfferedSkill,
-      message: requestMessage,
-    });
+    try {
+      await createSwap.mutateAsync({
+        receiver: swapRequestDialog.targetUser.id,
+        requestedSkill: swapRequestDialog.targetSkill,
+        offeredSkill: selectedOfferedSkill,
+        message: requestMessage,
+      });
 
-    setSwapRequestDialog({ open: false, targetUser: null, targetSkill: "" });
-    setRequestMessage("");
-    setSelectedOfferedSkill("");
+      setSwapRequestDialog({ open: false, targetUser: null, targetSkill: "" });
+      setRequestMessage("");
+      setSelectedOfferedSkill("");
 
-    // Show success message or redirect
-    navigate("/swap-requests");
+      // Show success message or redirect
+      navigate("/swap-requests");
+    } catch (error) {
+      console.error("Failed to create swap request:", error);
+      // TODO: Show error toast
+    }
   };
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <AppLayout>
+        <div className="space-y-6">
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <div className="w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading users...</p>
+            </div>
+          </div>
+        </div>
+      </AppLayout>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <AppLayout>
+        <div className="space-y-6">
+          <Card>
+            <CardContent className="text-center py-12">
+              <h3 className="text-lg font-medium text-red-600 mb-2">
+                Error loading users
+              </h3>
+              <p className="text-gray-600">
+                {error.message || "Something went wrong. Please try again later."}
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
