@@ -138,6 +138,14 @@
     background-clip: text;
   }
 
+  /* Enhanced gradient text for dark mode */
+  .dark .gradient-text-purple {
+    background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
   /* Animated gradient background */
   .gradient-bg {
     background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
