@@ -199,7 +199,9 @@ const Login = () => {
               </Button>
 
               <div className="text-center">
-                <span className="text-gray-600">New to SkillSwap? </span>
+                <span className="text-gray-600 dark:text-gray-300">
+                  New to SkillSwap?{" "}
+                </span>
                 <Link
                   to="/register"
                   className="text-purple-600 hover:text-purple-700 font-semibold hover:underline transition-colors"
@@ -212,13 +214,13 @@ const Login = () => {
         </Card>
 
         {/* Demo Accounts with modern styling */}
-        <Card className="border-0 shadow-xl shadow-purple-500/10 backdrop-blur-lg bg-white/70 rounded-3xl overflow-hidden">
+        <Card className="border-0 shadow-xl shadow-purple-500/10 backdrop-blur-lg bg-white/70 dark:bg-gray-800/70 rounded-3xl overflow-hidden transition-colors duration-300">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-lg gradient-text-purple flex items-center justify-center gap-2">
               <Globe className="h-5 w-5" />
               Try It Out
             </CardTitle>
-            <CardDescription className="text-gray-600">
+            <CardDescription className="text-gray-600 dark:text-gray-300">
               Explore with our demo accounts
             </CardDescription>
           </CardHeader>
@@ -243,7 +245,7 @@ const Login = () => {
         </Card>
 
         {/* Footer */}
-        <div className="text-center text-sm text-gray-500">
+        <div className="text-center text-sm text-gray-500 dark:text-gray-400">
           <p>Built with 💜 for the community</p>
         </div>
       </div>
