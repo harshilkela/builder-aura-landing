@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { User, AuthContextType } from "@/types";
+import { api } from "@/lib/api";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -11,170 +12,93 @@ export const useAuth = () => {
   return context;
 };
 
-const initialUsers: User[] = [
-  {
-    id: "admin-1",
-    name: "Admin User",
-    email: "admin@skillswap.com",
-    location: "New York, NY",
-    isPublic: true,
-    availability: ["weekdays", "evenings"],
-    skillsOffered: [],
-    skillsWanted: [],
-    rating: 5,
-    reviewCount: 0,
-    joinedDate: new Date(),
-    isBanned: false,
-    role: "admin",
-  },
-  {
-    id: "user-1",
-    name: "John Doe",
-    email: "john@example.com",
-    location: "San Francisco, CA",
-    isPublic: true,
-    availability: ["weekends", "evenings"],
-    skillsOffered: [
-      {
-        id: "skill-1",
-        name: "Photoshop",
-        category: "Design",
-        description: "Advanced photo editing and design",
-        level: "expert",
-        isApproved: true,
-      },
-      {
-        id: "skill-2",
-        name: "JavaScript",
-        category: "Programming",
-        description: "Frontend development with React",
-        level: "advanced",
-        isApproved: true,
-      },
-    ],
-    skillsWanted: [
-      {
-        id: "skill-3",
-        name: "Spanish",
-        category: "Language",
-        description: "Conversational Spanish",
-        level: "beginner",
-        isApproved: true,
-      },
-    ],
-    rating: 4.8,
-    reviewCount: 12,
-    joinedDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-    isBanned: false,
-    role: "user",
-  },
-  {
-    id: "user-2",
-    name: "Sarah Wilson",
-    email: "sarah@example.com",
-    location: "Austin, TX",
-    isPublic: true,
-    availability: ["weekends"],
-    skillsOffered: [
-      {
-        id: "skill-4",
-        name: "Spanish",
-        category: "Language",
-        description: "Native Spanish speaker",
-        level: "expert",
-        isApproved: true,
-      },
-      {
-        id: "skill-5",
-        name: "Yoga",
-        category: "Fitness",
-        description: "Certified yoga instructor",
-        level: "expert",
-        isApproved: true,
-      },
-    ],
-    skillsWanted: [
-      {
-        id: "skill-6",
-        name: "Excel",
-        category: "Office",
-        description: "Advanced Excel formulas and pivot tables",
-        level: "intermediate",
-        isApproved: true,
-      },
-    ],
-    rating: 4.9,
-    reviewCount: 8,
-    joinedDate: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000),
-    isBanned: false,
-    role: "user",
-  },
-];
-
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [users, setUsers] = useState<User[]>(initialUsers);
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Check for existing token and fetch user on mount
   useEffect(() => {
-    const savedUser = localStorage.getItem("skillswap-user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+    const token = localStorage.getItem("skillswap-token");
+    if (token) {
+      api.setToken(token);
+      fetchCurrentUser();
+    } else {
+      setIsLoading(false);
     }
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
-    const foundUser = users.find((u) => u.email === email);
-    if (foundUser && !foundUser.isBanned) {
-      setUser(foundUser);
-      localStorage.setItem("skillswap-user", JSON.stringify(foundUser));
-      return true;
+  const fetchCurrentUser = async () => {
+    try {
+      const userData = await api.getCurrentUser();
+      setUser(userData);
+    } catch (error) {
+      console.error("Failed to fetch current user:", error);
+      // Clear invalid token
+      api.clearToken();
+      localStorage.removeItem("skillswap-user");
+    } finally {
+      setIsLoading(false);
     }
-    return false;
+  };
+
+  const login = async (email: string, password: string): Promise<boolean> => {
+    try {
+      const { user: userData, token } = await api.login(email, password);
+      setUser(userData);
+      localStorage.setItem("skillswap-user", JSON.stringify(userData));
+      return true;
+    } catch (error) {
+      console.error("Login failed:", error);
+      return false;
+    }
   };
 
   const register = async (
     userData: Partial<User> & { password: string },
   ): Promise<boolean> => {
-    if (users.some((u) => u.email === userData.email)) {
+    try {
+      const { user: newUser, token } = await api.register({
+        name: userData.name || "",
+        email: userData.email || "",
+        password: userData.password,
+        location: userData.location,
+        skillsOffered: userData.skillsOffered?.map(skill => skill.name) || [],
+        skillsWanted: userData.skillsWanted?.map(skill => skill.name) || [],
+        availability: userData.availability || [],
+      });
+      
+      setUser(newUser);
+      localStorage.setItem("skillswap-user", JSON.stringify(newUser));
+      return true;
+    } catch (error) {
+      console.error("Registration failed:", error);
       return false;
     }
-
-    const newUser: User = {
-      id: `user-${Date.now()}`,
-      name: userData.name || "",
-      email: userData.email || "",
-      location: userData.location,
-      profilePhoto: userData.profilePhoto,
-      isPublic: true,
-      availability: userData.availability || [],
-      skillsOffered: userData.skillsOffered || [],
-      skillsWanted: userData.skillsWanted || [],
-      rating: 0,
-      reviewCount: 0,
-      joinedDate: new Date(),
-      isBanned: false,
-      role: "user",
-    };
-
-    setUsers((prev) => [...prev, newUser]);
-    setUser(newUser);
-    localStorage.setItem("skillswap-user", JSON.stringify(newUser));
-    return true;
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("skillswap-user");
+  const logout = async () => {
+    try {
+      await api.logout();
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      setUser(null);
+      localStorage.removeItem("skillswap-user");
+    }
   };
 
-  const updateProfile = (userData: Partial<User>) => {
-    if (user) {
-      const updatedUser = { ...user, ...userData };
+  const updateProfile = async (userData: Partial<User>) => {
+    if (!user) return;
+    
+    try {
+      const updatedUser = await api.updateUserProfile(user.id, userData);
       setUser(updatedUser);
-      setUsers((prev) => prev.map((u) => (u.id === user.id ? updatedUser : u)));
       localStorage.setItem("skillswap-user", JSON.stringify(updatedUser));
+    } catch (error) {
+      console.error("Profile update failed:", error);
+      throw error;
     }
   };
 
@@ -184,6 +108,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     register,
     logout,
     updateProfile,
+    isLoading,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

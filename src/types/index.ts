@@ -61,8 +61,9 @@ export interface AuthContextType {
   register: (
     userData: Partial<User> & { password: string },
   ) => Promise<boolean>;
-  logout: () => void;
-  updateProfile: (userData: Partial<User>) => void;
+  logout: () => Promise<void>;
+  updateProfile: (userData: Partial<User>) => Promise<void>;
+  isLoading: boolean;
 }
 
 export interface SkillSwapContextType {
