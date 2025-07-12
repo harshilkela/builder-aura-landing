@@ -13,4 +13,288 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useNavigate } from "react-router-dom";
-import {\n  Users,\n  BookOpen,\n  MessageSquare,\n  Star,\n  TrendingUp,\n  Clock,\n  CheckCircle,\n  XCircle,\n  Info,\n} from \"lucide-react\";\n\nconst Dashboard = () => {\n  const { user } = useAuth();\n  const { swapRequests, adminMessages } = useSkillSwap();\n  const navigate = useNavigate();\n\n  if (!user) {\n    navigate(\"/login\");\n    return null;\n  }\n\n  const userSwapRequests = swapRequests.filter(\n    (request) => request.fromUserId === user.id || request.toUserId === user.id,\n  );\n  const pendingRequests = userSwapRequests.filter(\n    (request) => request.status === \"pending\",\n  );\n  const activeSwaps = userSwapRequests.filter(\n    (request) => request.status === \"accepted\",\n  );\n\n  const activeMessages = adminMessages.filter((msg) => msg.isActive);\n\n  const stats = [\n    {\n      title: \"Skills Offered\",\n      value: user.skillsOffered.length,\n      icon: BookOpen,\n      color: \"text-blue-600\",\n    },\n    {\n      title: \"Skills Wanted\",\n      value: user.skillsWanted.length,\n      icon: TrendingUp,\n      color: \"text-green-600\",\n    },\n    {\n      title: \"Pending Requests\",\n      value: pendingRequests.length,\n      icon: Clock,\n      color: \"text-yellow-600\",\n    },\n    {\n      title: \"Active Swaps\",\n      value: activeSwaps.length,\n      icon: MessageSquare,\n      color: \"text-indigo-600\",\n    },\n  ];\n\n  const getStatusIcon = (status: string) => {\n    switch (status) {\n      case \"pending\":\n        return <Clock className=\"h-4 w-4 text-yellow-500\" />;\n      case \"accepted\":\n        return <CheckCircle className=\"h-4 w-4 text-green-500\" />;\n      case \"rejected\":\n        return <XCircle className=\"h-4 w-4 text-red-500\" />;\n      case \"completed\":\n        return <Star className=\"h-4 w-4 text-blue-500\" />;\n      default:\n        return <Clock className=\"h-4 w-4 text-gray-500\" />;\n    }\n  };\n\n  return (\n    <AppLayout>\n      <div className=\"space-y-6\">\n        {/* Welcome Section */}\n        <div className=\"flex flex-col lg:flex-row lg:items-center lg:justify-between\">\n          <div>\n            <h1 className=\"text-3xl font-bold text-gray-900\">\n              Welcome back, {user.name}!\n            </h1>\n            <p className=\"text-gray-600 mt-1\">\n              Ready to learn something new or share your expertise?\n            </p>\n          </div>\n          <div className=\"mt-4 lg:mt-0 flex gap-3\">\n            <Button onClick={() => navigate(\"/browse\")}>\n              <Users className=\"h-4 w-4 mr-2\" />\n              Browse Skills\n            </Button>\n            <Button variant=\"outline\" onClick={() => navigate(\"/profile\")}>\n              <BookOpen className=\"h-4 w-4 mr-2\" />\n              Update Profile\n            </Button>\n          </div>\n        </div>\n\n        {/* Admin Messages */}\n        {activeMessages.length > 0 && (\n          <div className=\"space-y-2\">\n            {activeMessages.map((message) => (\n              <Alert key={message.id} className=\"border-blue-200 bg-blue-50\">\n                <Info className=\"h-4 w-4\" />\n                <AlertDescription>\n                  <div className=\"font-semibold\">{message.title}</div>\n                  <div className=\"text-sm mt-1\">{message.content}</div>\n                </AlertDescription>\n              </Alert>\n            ))}\n          </div>\n        )}\n\n        {/* Stats Grid */}\n        <div className=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6\">\n          {stats.map((stat) => {\n            const Icon = stat.icon;\n            return (\n              <Card key={stat.title}>\n                <CardContent className=\"p-6\">\n                  <div className=\"flex items-center justify-between\">\n                    <div>\n                      <p className=\"text-sm font-medium text-gray-600\">\n                        {stat.title}\n                      </p>\n                      <p className=\"text-3xl font-bold text-gray-900\">\n                        {stat.value}\n                      </p>\n                    </div>\n                    <Icon className={`h-8 w-8 ${stat.color}`} />\n                  </div>\n                </CardContent>\n              </Card>\n            );\n          })}\n        </div>\n\n        <div className=\"grid grid-cols-1 lg:grid-cols-2 gap-6\">\n          {/* Recent Swap Requests */}\n          <Card>\n            <CardHeader>\n              <CardTitle className=\"flex items-center gap-2\">\n                <MessageSquare className=\"h-5 w-5\" />\n                Recent Swap Requests\n              </CardTitle>\n              <CardDescription>\n                Your latest skill exchange activities\n              </CardDescription>\n            </CardHeader>\n            <CardContent>\n              {userSwapRequests.length === 0 ? (\n                <div className=\"text-center py-8 text-gray-500\">\n                  <MessageSquare className=\"h-12 w-12 mx-auto mb-4 text-gray-300\" />\n                  <p>No swap requests yet</p>\n                  <p className=\"text-sm\">Start browsing skills to connect!</p>\n                </div>\n              ) : (\n                <div className=\"space-y-4\">\n                  {userSwapRequests.slice(0, 5).map((request) => (\n                    <div\n                      key={request.id}\n                      className=\"flex items-center justify-between p-3 bg-gray-50 rounded-lg\"\n                    >\n                      <div className=\"flex-1\">\n                        <p className=\"font-medium text-sm\">\n                          {request.fromUserId === user.id ? \"You\" : \"Someone\"}{\" \"}\n                          requested {request.requestedSkill}\n                        </p>\n                        <p className=\"text-sm text-gray-600\">\n                          Offering: {request.offeredSkill}\n                        </p>\n                        <p className=\"text-xs text-gray-500 mt-1\">\n                          {request.createdAt.toLocaleDateString()}\n                        </p>\n                      </div>\n                      <div className=\"flex items-center gap-2\">\n                        {getStatusIcon(request.status)}\n                        <Badge\n                          variant={\n                            request.status === \"accepted\"\n                              ? \"default\"\n                              : request.status === \"pending\"\n                                ? \"secondary\"\n                                : \"destructive\"\n                          }\n                          className=\"text-xs\"\n                        >\n                          {request.status}\n                        </Badge>\n                      </div>\n                    </div>\n                  ))}\n                  {userSwapRequests.length > 5 && (\n                    <Button\n                      variant=\"outline\"\n                      className=\"w-full\"\n                      onClick={() => navigate(\"/swap-requests\")}\n                    >\n                      View All Requests\n                    </Button>\n                  )}\n                </div>\n              )}\n            </CardContent>\n          </Card>\n\n          {/* Skills Overview */}\n          <Card>\n            <CardHeader>\n              <CardTitle className=\"flex items-center gap-2\">\n                <BookOpen className=\"h-5 w-5\" />\n                Your Skills\n              </CardTitle>\n              <CardDescription>\n                Skills you offer and want to learn\n              </CardDescription>\n            </CardHeader>\n            <CardContent>\n              <div className=\"space-y-4\">\n                <div>\n                  <h4 className=\"font-medium text-sm mb-2 text-green-700\">\n                    Skills You Offer ({user.skillsOffered.length})\n                  </h4>\n                  {user.skillsOffered.length === 0 ? (\n                    <p className=\"text-sm text-gray-500\">\n                      No skills added yet\n                    </p>\n                  ) : (\n                    <div className=\"flex flex-wrap gap-1\">\n                      {user.skillsOffered.slice(0, 5).map((skill) => (\n                        <Badge key={skill.id} variant=\"secondary\">\n                          {skill.name}\n                        </Badge>\n                      ))}\n                      {user.skillsOffered.length > 5 && (\n                        <Badge variant=\"outline\">\n                          +{user.skillsOffered.length - 5} more\n                        </Badge>\n                      )}\n                    </div>\n                  )}\n                </div>\n\n                <div>\n                  <h4 className=\"font-medium text-sm mb-2 text-blue-700\">\n                    Skills You Want ({user.skillsWanted.length})\n                  </h4>\n                  {user.skillsWanted.length === 0 ? (\n                    <p className=\"text-sm text-gray-500\">\n                      No skills requested yet\n                    </p>\n                  ) : (\n                    <div className=\"flex flex-wrap gap-1\">\n                      {user.skillsWanted.slice(0, 5).map((skill) => (\n                        <Badge key={skill.id} variant=\"outline\">\n                          {skill.name}\n                        </Badge>\n                      ))}\n                      {user.skillsWanted.length > 5 && (\n                        <Badge variant=\"outline\">\n                          +{user.skillsWanted.length - 5} more\n                        </Badge>\n                      )}\n                    </div>\n                  )}\n                </div>\n\n                <Button\n                  variant=\"outline\"\n                  className=\"w-full\"\n                  onClick={() => navigate(\"/profile\")}\n                >\n                  Manage Skills\n                </Button>\n              </div>\n            </CardContent>\n          </Card>\n        </div>\n      </div>\n    </AppLayout>\n  );\n};\n\nexport default Dashboard;"
+import {
+  Users,
+  BookOpen,
+  MessageSquare,
+  Star,
+  TrendingUp,
+  Clock,
+  CheckCircle,
+  XCircle,
+  Info,
+} from "lucide-react";
+
+const Dashboard = () => {
+  const { user } = useAuth();
+  const { swapRequests, adminMessages } = useSkillSwap();
+  const navigate = useNavigate();
+
+  if (!user) {
+    navigate("/login");
+    return null;
+  }
+
+  const userSwapRequests = swapRequests.filter(
+    (request) => request.fromUserId === user.id || request.toUserId === user.id,
+  );
+  const pendingRequests = userSwapRequests.filter(
+    (request) => request.status === "pending",
+  );
+  const activeSwaps = userSwapRequests.filter(
+    (request) => request.status === "accepted",
+  );
+
+  const activeMessages = adminMessages.filter((msg) => msg.isActive);
+
+  const stats = [
+    {
+      title: "Skills Offered",
+      value: user.skillsOffered.length,
+      icon: BookOpen,
+      color: "text-blue-600",
+    },
+    {
+      title: "Skills Wanted",
+      value: user.skillsWanted.length,
+      icon: TrendingUp,
+      color: "text-green-600",
+    },
+    {
+      title: "Pending Requests",
+      value: pendingRequests.length,
+      icon: Clock,
+      color: "text-yellow-600",
+    },
+    {
+      title: "Active Swaps",
+      value: activeSwaps.length,
+      icon: MessageSquare,
+      color: "text-indigo-600",
+    },
+  ];
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "pending":
+        return <Clock className="h-4 w-4 text-yellow-500" />;
+      case "accepted":
+        return <CheckCircle className="h-4 w-4 text-green-500" />;
+      case "rejected":
+        return <XCircle className="h-4 w-4 text-red-500" />;
+      case "completed":
+        return <Star className="h-4 w-4 text-blue-500" />;
+      default:
+        return <Clock className="h-4 w-4 text-gray-500" />;
+    }
+  };
+
+  return (
+    <AppLayout>
+      <div className="space-y-6">
+        {/* Welcome Section */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Welcome back, {user.name}!
+            </h1>
+            <p className="text-gray-600 mt-1">
+              Ready to learn something new or share your expertise?
+            </p>
+          </div>
+          <div className="mt-4 lg:mt-0 flex gap-3">
+            <Button onClick={() => navigate("/browse")}>
+              <Users className="h-4 w-4 mr-2" />
+              Browse Skills
+            </Button>
+            <Button variant="outline" onClick={() => navigate("/profile")}>
+              <BookOpen className="h-4 w-4 mr-2" />
+              Update Profile
+            </Button>
+          </div>
+        </div>
+
+        {/* Admin Messages */}
+        {activeMessages.length > 0 && (
+          <div className="space-y-2">
+            {activeMessages.map((message) => (
+              <Alert key={message.id} className="border-blue-200 bg-blue-50">
+                <Info className="h-4 w-4" />
+                <AlertDescription>
+                  <div className="font-semibold">{message.title}</div>
+                  <div className="text-sm mt-1">{message.content}</div>
+                </AlertDescription>
+              </Alert>
+            ))}
+          </div>
+        )}
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {stats.map((stat) => {
+            const Icon = stat.icon;
+            return (
+              <Card key={stat.title}>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">
+                        {stat.title}
+                      </p>
+                      <p className="text-3xl font-bold text-gray-900">
+                        {stat.value}
+                      </p>
+                    </div>
+                    <Icon className={`h-8 w-8 ${stat.color}`} />
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Recent Swap Requests */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <MessageSquare className="h-5 w-5" />
+                Recent Swap Requests
+              </CardTitle>
+              <CardDescription>
+                Your latest skill exchange activities
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {userSwapRequests.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                  <MessageSquare className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                  <p>No swap requests yet</p>
+                  <p className="text-sm">Start browsing skills to connect!</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {userSwapRequests.slice(0, 5).map((request) => (
+                    <div
+                      key={request.id}
+                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                    >
+                      <div className="flex-1">
+                        <p className="font-medium text-sm">
+                          {request.fromUserId === user.id ? "You" : "Someone"}{" "}
+                          requested {request.requestedSkill}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Offering: {request.offeredSkill}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          {request.createdAt.toLocaleDateString()}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {getStatusIcon(request.status)}
+                        <Badge
+                          variant={
+                            request.status === "accepted"
+                              ? "default"
+                              : request.status === "pending"
+                                ? "secondary"
+                                : "destructive"
+                          }
+                          className="text-xs"
+                        >
+                          {request.status}
+                        </Badge>
+                      </div>
+                    </div>
+                  ))}
+                  {userSwapRequests.length > 5 && (
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => navigate("/swap-requests")}
+                    >
+                      View All Requests
+                    </Button>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Skills Overview */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BookOpen className="h-5 w-5" />
+                Your Skills
+              </CardTitle>
+              <CardDescription>
+                Skills you offer and want to learn
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="font-medium text-sm mb-2 text-green-700">
+                    Skills You Offer ({user.skillsOffered.length})
+                  </h4>
+                  {user.skillsOffered.length === 0 ? (
+                    <p className="text-sm text-gray-500">No skills added yet</p>
+                  ) : (
+                    <div className="flex flex-wrap gap-1">
+                      {user.skillsOffered.slice(0, 5).map((skill) => (
+                        <Badge key={skill.id} variant="secondary">
+                          {skill.name}
+                        </Badge>
+                      ))}
+                      {user.skillsOffered.length > 5 && (
+                        <Badge variant="outline">
+                          +{user.skillsOffered.length - 5} more
+                        </Badge>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <h4 className="font-medium text-sm mb-2 text-blue-700">
+                    Skills You Want ({user.skillsWanted.length})
+                  </h4>
+                  {user.skillsWanted.length === 0 ? (
+                    <p className="text-sm text-gray-500">
+                      No skills requested yet
+                    </p>
+                  ) : (
+                    <div className="flex flex-wrap gap-1">
+                      {user.skillsWanted.slice(0, 5).map((skill) => (
+                        <Badge key={skill.id} variant="outline">
+                          {skill.name}
+                        </Badge>
+                      ))}
+                      {user.skillsWanted.length > 5 && (
+                        <Badge variant="outline">
+                          +{user.skillsWanted.length - 5} more
+                        </Badge>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => navigate("/profile")}
+                >
+                  Manage Skills
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </AppLayout>
+  );
+};
+
+export default Dashboard;
