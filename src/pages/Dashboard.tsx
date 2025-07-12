@@ -252,7 +252,7 @@ const Dashboard = () => {
                 </div>
                 <span className="gradient-text-purple">Recent Swaps</span>
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="dark:text-purple-200">
                 Your latest skill exchange adventures
               </CardDescription>
             </CardHeader>
@@ -352,7 +352,7 @@ const Dashboard = () => {
                   Your Skills
                 </span>
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="dark:text-purple-200">
                 Your superpowers and learning aspirations
               </CardDescription>
             </CardHeader>
