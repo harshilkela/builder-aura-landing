@@ -245,7 +245,7 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Recent Swap Requests with modern card design */}
           <Card className="border-0 shadow-xl shadow-purple-500/10 backdrop-blur-sm bg-white/80 dark:bg-gray-800/95 rounded-3xl overflow-hidden transition-colors duration-300">
-            <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 border-b border-purple-100/50">
+            <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-700 border-b border-purple-100/50 dark:border-gray-600">
               <CardTitle className="flex items-center gap-3">
                 <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl">
                   <MessageSquare className="h-5 w-5 text-white" />
