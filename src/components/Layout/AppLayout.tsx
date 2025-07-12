@@ -176,7 +176,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                       </AvatarFallback>
                     </Avatar>
                     <div className="hidden sm:flex flex-col items-start">
-                      <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                      <span className="text-sm font-medium text-gray-800 dark:text-white">
                         {user.name}
                       </span>
                       <div className="flex items-center gap-2">
