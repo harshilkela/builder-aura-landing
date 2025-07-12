@@ -123,8 +123,8 @@ const Dashboard = () => {
     <AppLayout>
       <div className="space-y-8">
         {/* Welcome Section with modern design */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600 p-8 text-white">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-600/80 via-pink-600/80 to-blue-600/80"></div>
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600 dark:from-purple-800 dark:via-pink-800 dark:to-blue-800 p-8 text-white transition-colors duration-500">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-600/80 via-pink-600/80 to-blue-600/80 dark:from-purple-800/90 dark:via-pink-800/90 dark:to-blue-800/90"></div>
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-32 translate-x-32"></div>
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full blur-3xl translate-y-24 -translate-x-24"></div>
 
@@ -175,17 +175,19 @@ const Dashboard = () => {
             {activeMessages.map((message) => (
               <Alert
                 key={message.id}
-                className="border-0 bg-gradient-to-r from-blue-50 to-cyan-50 backdrop-blur-sm rounded-2xl shadow-lg shadow-blue-500/10"
+                className="border-0 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 backdrop-blur-sm rounded-2xl shadow-lg shadow-blue-500/10"
               >
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-blue-100 rounded-xl">
                     <Info className="h-5 w-5 text-blue-600" />
                   </div>
                   <AlertDescription className="flex-1">
-                    <div className="font-semibold text-blue-900">
+                    <div className="font-semibold text-blue-900 dark:text-blue-100">
                       {message.title}
                     </div>
-                    <div className="text-blue-700 mt-1">{message.content}</div>
+                    <div className="text-blue-700 dark:text-blue-200 mt-1">
+                      {message.content}
+                    </div>
                   </AlertDescription>
                 </div>
               </Alert>
