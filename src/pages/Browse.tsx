@@ -45,7 +45,7 @@ import { User as UserType } from "@/types";
 
 const Browse = () => {
   const { user } = useAuth();
-  const { createSwapRequest } = useSkillSwap();
+  const { users, createSwapRequest } = useSkillSwap();
   const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState("");
