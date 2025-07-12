@@ -360,12 +360,12 @@ const Dashboard = () => {
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <Zap className="h-4 w-4 text-emerald-600" />
-                  <h4 className="font-semibold text-emerald-700 dark:text-emerald-300">
+                  <h4 className="font-semibold text-emerald-700 dark:text-emerald-200">
                     Skills You Offer ({user.skillsOffered.length})
                   </h4>
                 </div>
                 {user.skillsOffered.length === 0 ? (
-                  <p className="text-sm text-gray-500 dark:text-gray-300 italic">
+                  <p className="text-sm text-gray-500 dark:text-gray-100 italic">
                     Add some skills to start sharing your expertise! ✨
                   </p>
                 ) : (
@@ -391,12 +391,12 @@ const Dashboard = () => {
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <Target className="h-4 w-4 text-blue-600" />
-                  <h4 className="font-semibold text-blue-700 dark:text-blue-300">
+                  <h4 className="font-semibold text-blue-700 dark:text-blue-200">
                     Learning Goals ({user.skillsWanted.length})
                   </h4>
                 </div>
                 {user.skillsWanted.length === 0 ? (
-                  <p className="text-sm text-gray-500 dark:text-gray-300 italic">
+                  <p className="text-sm text-gray-500 dark:text-gray-100 italic">
                     What would you love to learn? Add your wishlist! 🎯
                   </p>
                 ) : (
