@@ -263,10 +263,10 @@ const Dashboard = () => {
                     <Rainbow className="h-12 w-12 text-purple-500" />
                   </div>
                   <div>
-                    <p className="text-gray-600 font-medium">
+                    <p className="text-gray-600 dark:text-gray-200 font-medium">
                       No swaps yet, but that's about to change!
                     </p>
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-sm text-gray-500 dark:text-gray-300 mt-1">
                       Start browsing skills to begin your journey
                     </p>
                   </div>
@@ -294,13 +294,13 @@ const Dashboard = () => {
                               {request.requestedSkill}
                             </span>
                           </p>
-                          <p className="text-sm text-gray-600 mt-1">
+                          <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
                             Offering:{" "}
                             <span className="text-emerald-600 font-medium">
                               {request.offeredSkill}
                             </span>
                           </p>
-                          <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 flex items-center gap-1">
                             <Calendar className="h-3 w-3" />
                             {request.createdAt.toLocaleDateString()}
                           </p>
