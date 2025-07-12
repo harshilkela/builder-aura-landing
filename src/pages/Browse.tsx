@@ -229,17 +229,17 @@ const Browse = () => {
               <CardContent className="space-y-4">
                 {/* Skills Offered */}
                 <div>
-                  <h4 className="font-medium text-sm mb-2 text-green-700">
+                  <h4 className="font-medium text-sm mb-2 text-green-700 dark:text-green-300">
                     Skills Offered
                   </h4>
                   <div className="space-y-2">
                     {otherUser.skillsOffered.map((skill) => (
                       <div
                         key={skill.id}
-                        className="flex items-center justify-between p-2 bg-green-50 rounded-lg"
+                        className="flex items-center justify-between p-2 bg-green-50 dark:bg-gray-700 rounded-lg"
                       >
                         <div className="flex-1">
-                          <span className="font-medium text-sm">
+                          <span className="font-medium text-sm dark:text-white">
                             {skill.name}
                           </span>
                           <Badge
@@ -248,7 +248,7 @@ const Browse = () => {
                           >
                             {skill.level}
                           </Badge>
-                          <p className="text-xs text-gray-600 mt-1">
+                          <p className="text-xs text-gray-600 dark:text-gray-200 mt-1">
                             {skill.description}
                           </p>
                         </div>
@@ -270,7 +270,7 @@ const Browse = () => {
                 {/* Skills Wanted */}
                 {otherUser.skillsWanted.length > 0 && (
                   <div>
-                    <h4 className="font-medium text-sm mb-2 text-blue-700">
+                    <h4 className="font-medium text-sm mb-2 text-blue-700 dark:text-blue-300">
                       Looking to Learn
                     </h4>
                     <div className="flex flex-wrap gap-1">
