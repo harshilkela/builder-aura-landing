@@ -289,7 +289,7 @@ const Browse = () => {
 
                 {/* Availability */}
                 <div>
-                  <h4 className="font-medium text-sm mb-2 flex items-center gap-1">
+                  <h4 className="font-medium text-sm mb-2 flex items-center gap-1 dark:text-gray-200">
                     <Clock className="h-3 w-3" />
                     Available
                   </h4>
