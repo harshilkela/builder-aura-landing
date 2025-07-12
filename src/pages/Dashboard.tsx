@@ -300,7 +300,7 @@ const Dashboard = () => {
                               {request.offeredSkill}
                             </span>
                           </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-200 mt-2 flex items-center gap-1">
+                          <p className="text-xs text-gray-500 dark:text-gray-100 mt-2 flex items-center gap-1">
                             <Calendar className="h-3 w-3" />
                             {request.createdAt.toLocaleDateString()}
                           </p>
